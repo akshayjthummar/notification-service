@@ -19,7 +19,7 @@ export class MailTransport implements NotificationTransport {
   async send(message: Message) {
     // email send
     const info = await this.transporter.sendMail({
-      from: 'akshaythummar@gmail.com',
+      from: config.get('mail.from'),
       to: message.to,
       subject: message.subject,
       text: message.text,
