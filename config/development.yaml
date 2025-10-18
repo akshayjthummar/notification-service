@@ -1,0 +1,9 @@
+kafka:
+  broker: localhost:9092
+mail:
+  host: smtp.ethereal.email
+  port: 587
+  auth:
+    user: ali.wolff66@ethereal.email
+    pass: qQSQFSVU8P32ZjWmeM]
+  from: '"Akshay J" <akshaythummar@gmail.com>''
