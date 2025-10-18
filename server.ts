@@ -9,7 +9,7 @@ const startServer = async () => {
     await broker.connectConsumer();
     await broker.consumeMessage(['order'], false);
   } catch (err) {
-    logger.error('Error happened: ', err.message);
+    logger.error('Error happened: ', err);
     await broker?.disconnectConsumer();
     process.exit(1);
   }

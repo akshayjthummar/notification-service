@@ -1,5 +1,8 @@
-import { Consumer, EachMessagePayload, Kafka } from "kafkajs";
-import { MessageBroker } from "../types/broker";
+import { Consumer, EachMessagePayload, Kafka } from 'kafkajs';
+import { MessageBroker } from '../types/broker';
+import { createNotificationTransport } from '../factories/notification-factory';
+import { handleOrderHtml, handleOrderText } from '../handlers/orderHandler';
+import config from 'config';
 
 export class KafkaBroker implements MessageBroker {
   private consumer: Consumer;
@@ -28,17 +31,26 @@ export class KafkaBroker implements MessageBroker {
     await this.consumer.subscribe({ topics, fromBeginning });
 
     await this.consumer.run({
-      eachMessage: async ({
-        topic,
-        partition,
-        message,
-      }: EachMessagePayload) => {
+      eachMessage: async ({ topic, partition, message }: EachMessagePayload) => {
+        if (!message.value) return;
         // Logic to handle incoming messages.
         console.log({
           value: message.value.toString(),
           topic,
           partition,
         });
+
+        if (topic === 'order') {
+          const transport = createNotificationTransport('mail');
+          const order = JSON.parse(message.value.toString());
+
+          await transport.send({
+            to: order.data.customerId.email || config.get('mail.from'),
+            subject: 'Order update.',
+            text: String(handleOrderText(order)),
+            html: handleOrderHtml(order),
+          });
+        }
       },
     });
   }
