@@ -1,0 +1,15 @@
+kafka:
+  broker:
+    - localhost:9092
+  sasl:
+    username: ''
+    password: ''
+mail:
+  host: smtp.ethereal.email
+  port: 587
+  auth:
+    user: nella.hyatt88@ethereal.email
+    pass: Vjc6X9F2anZP47YjHs
+  from: Akshay J <akshaythummar@gmail.com>
+frontend:
+  clientUi: http://localhost:3000
